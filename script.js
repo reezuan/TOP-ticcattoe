@@ -1,22 +1,34 @@
 const initBoard = (function () {
     const cells = document.querySelectorAll(".cell");
-    const controller = new AbortController();
-    const {signal} = controller;
+    const reset = document.querySelector(".reset");
 
-    cells.forEach(cell => {
-        cell.addEventListener("click", event => {
-            gameBoard.markCell(event.target.getAttribute("data-cell-index"));
+    function setGameEventHandlers() {
+        cells.forEach(cell => {
+            cell.addEventListener("click", progressGame, {once: true});
+        });
+    };
 
-            if (gameBoard.checkWinner() == true) {
-                gameBoard.renderBoard();
-                controller.abort(); // Removes all event listeners from game board cells once a winner is found.
-                game.stopGame();
-            } else if (gameBoard.checkWinner() == false) {
-                gameBoard.renderBoard();
-                game.changePlayerTurn();
-            }
-        }, {once: true, signal});
+    function progressGame() {
+        gameBoard.markCell(this.getAttribute("data-cell-index"));
+
+        if (gameBoard.checkWinner() == true) {
+            gameBoard.renderBoard();
+            cells.forEach(cell => {
+                cell.removeEventListener("click", progressGame, {once: true});
+            });
+        } else if (gameBoard.checkWinner() == false) {
+            gameBoard.renderBoard();
+            game.changePlayerTurn();
+        };
+    };
+
+    reset.addEventListener("click", () => {
+        gameBoard.resetBoard();
+        game.resetFirstPlayer();
+        setGameEventHandlers();
     });
+
+    setGameEventHandlers();
 })();
 
 const gameBoard = (function () {
@@ -75,7 +87,19 @@ const gameBoard = (function () {
         };
     };
 
-    return {markCell, checkWinner, renderBoard};
+    function resetBoard() {
+        const cells = document.querySelectorAll(".cell");
+        
+        cells.forEach(cell => {
+            cell.innerHTML = "";
+        });
+
+        for (let i = 0; i < board.length; i++) {
+            board[i] = "";
+        };
+    };
+
+    return {markCell, checkWinner, renderBoard, resetBoard};
 })();
 
 const game = (function () {
@@ -93,11 +117,11 @@ const game = (function () {
         }
     };
 
-    function stopGame() { // This function will stop the game (e.g. ensure no other cells can be clicked).
-        console.log("stop the game");
-    };
+    function resetFirstPlayer() {
+        currentPlayer = "player1";
+    }
 
-    return {getCurrentPlayer, changePlayerTurn, stopGame};
+    return {getCurrentPlayer, changePlayerTurn, resetFirstPlayer};
 })();
 
 function createPlayer() {
