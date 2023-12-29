@@ -10,6 +10,12 @@
 
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    height: 100vh;
+    
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,16 +27,60 @@ button {
     padding: 0;
 }
 
+/* ---------------------------- HEADER ----------------------------- */
+
+header {
+    background-color: #cfcfc4;
+    color: #333303;
+    padding: 50px 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 6rem;
+    font-weight: 600;
+    margin: 0;
+}
+
 /* ----------------------------- MAIN ------------------------------ */
 
+main {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.player-side {
+    justify-self: center;
+    align-self: center;
+}
+
+.player-side img {
+    width: 350px;
+    height: auto;
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .gameboard {
-    width: 800px;
-    height: 800px;
+    width: 600px;
+    height: 600px;
     
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 5px;
+
+    justify-self: center;
+    align-self: center;
 }
 
 .cell {
@@ -38,7 +88,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    box-shadow: 5px 6px 10px 4px #CCCEDD;
 }
 
 .cell[data-cell-index="1"] {
@@ -58,19 +108,22 @@ button {
 }
 
 .cell img {
-    width: 200px;
+    width: 140px;
     height: auto;
+}
+
+button.reset {
+    background-color: #9C9C65;
+    color: whitesmoke;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.15rem;
 }
 
 /* ---------------------------- FOOTER ----------------------------- */
 
 footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin-right: 30px;
-
     display: flex;
     justify-content: center;
     align-items: baseline;
