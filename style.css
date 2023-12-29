@@ -56,11 +56,24 @@ main {
 .player-side {
     justify-self: center;
     align-self: center;
+    display: grid;
+    grid-template-rows: auto 300px 100px;
+    justify-items: center;
+    gap: 20px;
+}
+
+.player-side h2 {
+    font-size: 2.6rem;
 }
 
 .player-side img {
-    width: 350px;
+    width: 300px;
     height: auto;
+}
+
+.player-side p {
+    font-size: 1.5rem;
+    margin-top: 40px;
 }
 
 .game-area {

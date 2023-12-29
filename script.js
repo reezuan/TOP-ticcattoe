@@ -16,6 +16,7 @@ const initBoard = (function () {
             cells.forEach(cell => {
                 cell.removeEventListener("click", progressGame, {once: true});
             });
+            game.declareWinner();
         } else if (gameBoard.checkWinner() == false) {
             gameBoard.renderBoard();
             game.changePlayerTurn();
@@ -24,6 +25,7 @@ const initBoard = (function () {
 
     reset.addEventListener("click", () => {
         gameBoard.resetBoard();
+        game.resetTurnMessage();
         game.resetFirstPlayer();
         setGameEventHandlers();
     });
@@ -104,24 +106,57 @@ const gameBoard = (function () {
 
 const game = (function () {
     let currentPlayer = "player1";
+    const playerOne = document.querySelector(".player-one");
+    const playerTwo = document.querySelector(".player-two");
 
     function getCurrentPlayer() {
         return currentPlayer;
     };
 
     function changePlayerTurn() {
+        const turnMessage = document.querySelector(".turn-message");
+
+        const newTurnMessage = document.createElement("p");
+        newTurnMessage.classList.add("turn-message");
+        newTurnMessage.textContent = `It's your turn, Player ${currentPlayer == "player1" ? "2" : "1"}!`;
+        
         if (currentPlayer === "player1") {
             currentPlayer = "player2";
+            const removeTurnMessage = playerOne.removeChild(turnMessage);
+            playerTwo.appendChild(newTurnMessage);
         } else if (currentPlayer === "player2") {
             currentPlayer = "player1";
-        }
+            const removeTurnMessage = playerTwo.removeChild(turnMessage);
+            playerOne.appendChild(newTurnMessage);
+        };
     };
 
+    function declareWinner() {
+        const turnMessage = document.querySelector(".turn-message");
+        turnMessage.textContent = `Player ${currentPlayer == "player1" ? "1" : "2"} wins!`;
+    };
+    
     function resetFirstPlayer() {
         currentPlayer = "player1";
-    }
+    };
 
-    return {getCurrentPlayer, changePlayerTurn, resetFirstPlayer};
+    function resetTurnMessage() {
+        const turnMessage = document.querySelector(".turn-message");
+
+        const newTurnMessage = document.createElement("p");
+        newTurnMessage.classList.add("turn-message");
+        newTurnMessage.textContent = `You go first, Player 1.`;
+
+        if (currentPlayer === "player1") {
+            const removeTurnMessage = playerOne.removeChild(turnMessage);
+        } else if (currentPlayer === "player2") {
+            const removeTurnMessage = playerTwo.removeChild(turnMessage);
+        }
+
+        playerOne.appendChild(newTurnMessage);
+    };
+
+    return {getCurrentPlayer, changePlayerTurn, declareWinner, resetFirstPlayer, resetTurnMessage};
 })();
 
 function createPlayer() {
