@@ -24,8 +24,8 @@ button {
 /* ----------------------------- MAIN ------------------------------ */
 
 .gameboard {
-    width: 600px;
-    height: 600px;
+    width: 800px;
+    height: 800px;
     
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -35,6 +35,10 @@ button {
 
 .cell {
     border: black solid 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
 }
 
 .cell[data-cell-index="1"] {
@@ -51,6 +55,11 @@ button {
 
 .cell[data-cell-index="9"] {
     border-bottom-right-radius: 20px;
+}
+
+.cell img {
+    width: 200px;
+    height: auto;
 }
 
 /* ---------------------------- FOOTER ----------------------------- */
